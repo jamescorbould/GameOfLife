@@ -19,12 +19,25 @@ namespace GameOfLife
         {
             var board = new Board(5,5);
             board.Print();
+            board.PrintCoords();
+        }
+
+        public void PrintMenu()
+        {
+
+        }
+
+        public void NextGen()
+        {
+            // Work out the next generation.
+
         }
     }
 
     public class Board
     {
         private Cell[,] _grid;
+
         public Board(int sizeX, int sizeY)
         {
             // TODO: given a board of dimensions x cells by y cells, create cells to fill it
@@ -42,14 +55,27 @@ namespace GameOfLife
 
         public void Print()
         {
-            for (int x=0; x < _grid.GetLength(0); x++)
+            for (int y=0; y < _grid.GetLength(0); y++)
             {
-                for (int y=0; y < _grid.GetLength(1); y++)
+                for (int x=0; x < _grid.GetLength(1); x++)
                 {
                     Console.Write(_grid[x,y].IsCurrentlyAlive ? "*" : " ");
                 }
 
-                Console.WriteLine();
+                Console.Write("\n");
+            }
+        }
+
+        public void PrintCoords()
+        {
+            for (int y=0; y < _grid.GetLength(0); y++)
+            {
+                for (int x=0; x < _grid.GetLength(1); x++)
+                {
+                    Console.Write(x + "," + y + "|");
+                }
+
+                Console.Write("\n");
             }
         }
     }
@@ -70,7 +96,8 @@ namespace GameOfLife
                 y = y
             };
 
-            this.IsCurrentlyAlive = false;
+            Random random = new Random();
+            this.IsCurrentlyAlive = random.Next(2) == 0 ? false : true;
             this.IsFutureAlive = false;
         }
     }
@@ -80,7 +107,6 @@ namespace GameOfLife
         static void Main(string[] args)
         {
             var game = new Game();
-            Console.WriteLine();
         }
     }
 }
