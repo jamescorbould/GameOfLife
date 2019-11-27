@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace GameOfLife
 {
@@ -13,6 +14,20 @@ namespace GameOfLife
         }
     }
 
+    public enum CellType
+    {
+        CornerTopLeft,
+        CornerBottomLeft,
+        CornerTopRight,
+        CornerBottomRight,
+        Corner,
+        EdgeTop,
+        EdgeBottom,
+        EdgeLeft,
+        EdgeRight,
+        Middle
+    }
+
     public class Game
     {
         public Game()
@@ -20,6 +35,12 @@ namespace GameOfLife
             var board = new Board(5,5);
             board.Print();
             board.PrintCoords();
+
+            while (this.NextGen())
+            {
+                board.Print();
+                //await Task.Sleep(1000);
+            }
         }
 
         public void PrintMenu()
@@ -27,10 +48,10 @@ namespace GameOfLife
 
         }
 
-        public void NextGen()
+        public bool NextGen()
         {
             // Work out the next generation.
-
+            return false;
         }
     }
 
@@ -49,6 +70,12 @@ namespace GameOfLife
                 for (int y=0; y < sizeY; y++)
                 {
                     _grid[x,y] = new Cell(x,y);
+
+                    // A corner type cell?
+                    if (x == y || x + y == x || x + y == y)
+                    { 
+                        _grid[x,y].CellType = CellType.Corner;
+                    }
                 }
             }
         }
@@ -87,6 +114,7 @@ namespace GameOfLife
         public Coordinates Position { get; set; }
         public List<Cell> NeighbourCells { get; set; }
         public Coordinates coordinates { get; set; }
+        public CellType CellType { get; set; }
 
         public Cell(int x, int y)
         {
