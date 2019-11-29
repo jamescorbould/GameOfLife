@@ -30,9 +30,8 @@ namespace GameOfLife
 
     public class Game
     {
-        public Game()
+        public Game(Board board)
         {
-            var board = new Board(5,5);
             board.Print();
             board.PrintCoords();
 
@@ -57,36 +56,32 @@ namespace GameOfLife
 
     public class Board
     {
-        private Cell[,] _grid;
+        public Cell[,] Grid { get; set; }
 
         public Board(int sizeX, int sizeY)
         {
             // TODO: given a board of dimensions x cells by y cells, create cells to fill it
             // and work out each cells neighbours.
-            _grid = new Cell[sizeX, sizeY];
+            Grid = new Cell[sizeX, sizeY];
 
             for (int x=0; x < sizeX; x++)
             {
                 for (int y=0; y < sizeY; y++)
                 {
-                    _grid[x,y] = new Cell(x,y);
-
-                    // A corner type cell?
-                    if (x == y || x + y == x || x + y == y)
-                    { 
-                        _grid[x,y].CellType = CellType.Corner;
-                    }
+                    Grid[x,y] = new Cell(x,y);
                 }
             }
+
+            CalculateNeighbours();
         }
 
         public void Print()
         {
-            for (int y=0; y < _grid.GetLength(0); y++)
+            for (int y=0; y < Grid.GetLength(0); y++)
             {
-                for (int x=0; x < _grid.GetLength(1); x++)
+                for (int x=0; x < Grid.GetLength(1); x++)
                 {
-                    Console.Write(_grid[x,y].IsCurrentlyAlive ? "*" : " ");
+                    Console.Write(Grid[x,y].IsCurrentlyAlive ? "*" : " ");
                 }
 
                 Console.Write("\n");
@@ -95,14 +90,55 @@ namespace GameOfLife
 
         public void PrintCoords()
         {
-            for (int y=0; y < _grid.GetLength(0); y++)
+            for (int y=0; y < Grid.GetLength(0); y++)
             {
-                for (int x=0; x < _grid.GetLength(1); x++)
+                for (int x=0; x < Grid.GetLength(1); x++)
                 {
+                    if (Grid[x,y].Colour == "red")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                     Console.Write(x + "," + y + "|");
                 }
 
                 Console.Write("\n");
+            }
+        }
+
+        private void CalculateNeighbours()
+        {
+            for (int x=0; x < Grid.GetLength(0); x++)
+            {
+                for (int y=0; y < Grid.GetLength(1); y++)
+                {
+                    Grid[x,y] = new Cell(x,y);
+
+                    // A corner type cell?
+                    if (x + y == 0)
+                    {
+                        Grid[x,y].CellType = CellType.CornerTopLeft;
+                        Grid[x,y].Colour = "red";
+                    }
+                    else if (x == y && x == Grid.GetLength(0)-1 && y == Grid.GetLength(1)-1)
+                    {
+                        Grid[x,y].CellType = CellType.CornerBottomRight;                        Grid[x,y].Colour = "red";
+                        Grid[x,y].Colour = "red";
+                    }
+                    else if (x == Grid.GetLength(0)-1 && y == 0)
+                    { 
+                        Grid[x,y].CellType = CellType.CornerTopRight;
+                        Grid[x,y].Colour = "red";
+                    }
+                    else if (y == Grid.GetLength(1)-1 && x == 0)
+                    {
+                        Grid[x,y].CellType = CellType.CornerBottomLeft;
+                        Grid[x,y].Colour = "red";
+                    }
+                }
             }
         }
     }
@@ -115,6 +151,7 @@ namespace GameOfLife
         public List<Cell> NeighbourCells { get; set; }
         public Coordinates coordinates { get; set; }
         public CellType CellType { get; set; }
+        public string Colour { get; set; }
 
         public Cell(int x, int y)
         {
@@ -134,7 +171,7 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            var game = new Game();
+            var game = new Game(new Board(5,5));
         }
     }
 }
