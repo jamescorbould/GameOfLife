@@ -6,23 +6,17 @@ namespace GameOfLifeTests
 {
     public class UnitTest1
     {
-        [Fact]
-        //[]
-        public void CornersCorrectlyAssignedTest()
+        [Theory]
+        [InlineData(3, 3)]
+        [InlineData(5, 5)]
+        [InlineData(9, 9)]
+        public void CornersCorrectlyAssignedTest(int x, int y)
         {
-            var game = new Game(new Board(5,5));
-            var grid = game.board.grid;
-            
-            for (int x=0; x < grid.GetLength(0); x++)
-            {
-                for (int y=0; y < grid.GetLength(1); y++)
-                {
-                    if (x == y || (x + y == x && x == Grid.GetLength(0)) || (x + y == y && y == Grid.GetLength(1)))
-                    { 
-                        var isCorner = grid[x,y].CellType == CellType.Corner ? true : false;
-                    }
-                }
-            }
+            var board = new Board(x, y);
+            Assert.True(board.Grid[0, 0].CellType == CellType.CornerTopLeft);
+            Assert.True(board.Grid[x-1, 0].CellType == CellType.CornerTopRight);
+            Assert.True(board.Grid[0, y-1].CellType == CellType.CornerBottomLeft);
+            Assert.True(board.Grid[x-1, y-1].CellType == CellType.CornerBottomRight);
         }
     }
 }

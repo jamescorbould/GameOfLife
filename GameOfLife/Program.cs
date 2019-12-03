@@ -72,6 +72,7 @@ namespace GameOfLife
                 }
             }
 
+            CalculateCellTypes();
             CalculateNeighbours();
         }
 
@@ -109,7 +110,7 @@ namespace GameOfLife
             }
         }
 
-        private void CalculateNeighbours()
+        private void CalculateCellTypes()
         {
             for (int x=0; x < Grid.GetLength(0); x++)
             {
@@ -140,6 +141,11 @@ namespace GameOfLife
                     }
                 }
             }
+        }
+
+        public void CalculateNeighbours()
+        {
+            
         }
     }
 
