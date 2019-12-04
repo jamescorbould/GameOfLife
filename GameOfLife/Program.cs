@@ -25,7 +25,8 @@ namespace GameOfLife
         EdgeBottom,
         EdgeLeft,
         EdgeRight,
-        Middle
+        Middle,
+        Unassigned
     }
 
     public class Game
@@ -95,14 +96,19 @@ namespace GameOfLife
             {
                 for (int x=0; x < Grid.GetLength(1); x++)
                 {
-                    if (Grid[x,y].Colour == "red")
+                    switch (Grid[x,y].Colour)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        case "red":
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            break;
+                        case "orange":
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            break;
+                        default:
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
                     }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
+                    
                     Console.Write(x + "," + y + "|");
                 }
 
@@ -126,7 +132,7 @@ namespace GameOfLife
                     }
                     else if (x == y && x == Grid.GetLength(0)-1 && y == Grid.GetLength(1)-1)
                     {
-                        Grid[x,y].CellType = CellType.CornerBottomRight;                        Grid[x,y].Colour = "red";
+                        Grid[x,y].CellType = CellType.CornerBottomRight;
                         Grid[x,y].Colour = "red";
                     }
                     else if (x == Grid.GetLength(0)-1 && y == 0)
@@ -138,6 +144,31 @@ namespace GameOfLife
                     {
                         Grid[x,y].CellType = CellType.CornerBottomLeft;
                         Grid[x,y].Colour = "red";
+                    }
+
+                    // A cell on the edge of the grid?
+                    if (Grid[x,y].CellType == CellType.Unassigned)
+                    {
+                        if (x == 0)
+                        {
+                            Grid[x,y].CellType = CellType.EdgeLeft;
+                            Grid[x,y].Colour = "orange";
+                        }
+                        else if (x == Grid.GetLength(0)-1)
+                        {
+                            Grid[x,y].CellType = CellType.EdgeRight;
+                            Grid[x,y].Colour = "orange";
+                        }
+                        else if (y == 0)
+                        {
+                            Grid[x,y].CellType = CellType.EdgeTop;
+                            Grid[x,y].Colour = "orange";
+                        }
+                        else if (y == Grid.GetLength(1)-1)
+                        {
+                            Grid[x,y].CellType = CellType.EdgeBottom;
+                            Grid[x,y].Colour = "orange";
+                        }
                     }
                 }
             }
@@ -170,6 +201,7 @@ namespace GameOfLife
             Random random = new Random();
             this.IsCurrentlyAlive = random.Next(2) == 0 ? false : true;
             this.IsFutureAlive = false;
+            this.CellType = CellType.Unassigned;
         }
     }
 
