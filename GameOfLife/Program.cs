@@ -104,6 +104,9 @@ namespace GameOfLife
                         case "orange":
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
                             break;
+                        case "green":
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            break;
                         default:
                             Console.ForegroundColor = ConsoleColor.White;
                             break;
@@ -170,13 +173,40 @@ namespace GameOfLife
                             Grid[x,y].Colour = "orange";
                         }
                     }
+
+                    // Remaining cells should be middle type cells.
+                    if (Grid[x,y].CellType == CellType.Unassigned)
+                    {
+                        Grid[x,y].CellType = CellType.Middle;
+                        Grid[x,y].Colour = "green";
+                    }
                 }
             }
         }
 
         public void CalculateNeighbours()
         {
-            
+            for (int x=0; x < Grid.GetLength(0); x++)
+            {
+                for (int y=0; y < Grid.GetLength(1); y++)
+                {
+                    var cell = Grid[x,y];
+
+                    switch (cell.CellType)
+                    {
+                        case CellType.CornerBottomLeft:
+                            cell.NeighbourCells.Add(Grid[x, y-1]);
+                            cell.NeighbourCells.Add(Grid[x+1, y-1]);
+                            cell.NeighbourCells.Add(Grid[x+1, y]);
+                            break;
+                        case CellType.CornerTopLeft:
+                            cell.NeighbourCells.Add(Grid[x+1, y]);
+                            cell.NeighbourCells.Add(Grid[x+1, y+1]);
+                            cell.NeighbourCells.Add(Grid[x, y+1]);
+                            break;
+                    }
+                    
+                    Grid[x,y] = new Cell(x,y);
         }
     }
 
