@@ -204,6 +204,54 @@ namespace GameOfLife
                             cell.NeighbourCells.Add(Grid[x+1, y+1]);
                             cell.NeighbourCells.Add(Grid[x, y+1]);
                             break;
+                        case CellType.CornerTopRight:
+                            cell.NeighbourCells.Add(Grid[x-1, y]);
+                            cell.NeighbourCells.Add(Grid[x-1, y+1]);
+                            cell.NeighbourCells.Add(Grid[x, y+1]);
+                            break;
+                        case CellType.CornerBottomRight:
+                            cell.NeighbourCells.Add(Grid[x, y-1]);
+                            cell.NeighbourCells.Add(Grid[x-1, y-1]);
+                            cell.NeighbourCells.Add(Grid[x-1, y]);
+                            break;
+                        case CellType.EdgeTop:
+                            cell.NeighbourCells.Add(Grid[x-1, y]);
+                            cell.NeighbourCells.Add(Grid[x+1, y]);
+                            cell.NeighbourCells.Add(Grid[x-1, y+1]);
+                            cell.NeighbourCells.Add(Grid[x, y+1]);
+                            cell.NeighbourCells.Add(Grid[x+1, y+1]);
+                            break;
+                        case CellType.EdgeLeft:
+                            cell.NeighbourCells.Add(Grid[x, y-1]);
+                            cell.NeighbourCells.Add(Grid[x, y+1]);
+                            cell.NeighbourCells.Add(Grid[x+1, y]);
+                            cell.NeighbourCells.Add(Grid[x+1, y-1]);
+                            cell.NeighbourCells.Add(Grid[x+1, y+1]);
+                            break;
+                        case CellType.EdgeRight:
+                            cell.NeighbourCells.Add(Grid[x, y-1]);
+                            cell.NeighbourCells.Add(Grid[x, y+1]);
+                            cell.NeighbourCells.Add(Grid[x-1, y]);
+                            cell.NeighbourCells.Add(Grid[x-1, y-1]);
+                            cell.NeighbourCells.Add(Grid[x-1, y+1]);
+                            break;
+                        case CellType.EdgeBottom:
+                            cell.NeighbourCells.Add(Grid[x-1, y]);
+                            cell.NeighbourCells.Add(Grid[x+1, y]);
+                            cell.NeighbourCells.Add(Grid[x-1, y-1]);
+                            cell.NeighbourCells.Add(Grid[x, y-1]);
+                            cell.NeighbourCells.Add(Grid[x+1, y-1]);
+                            break;
+                        case CellType.Middle:
+                            cell.NeighbourCells.Add(Grid[x, y-1]);
+                            cell.NeighbourCells.Add(Grid[x, y+1]);
+                            cell.NeighbourCells.Add(Grid[x-1, y]);
+                            cell.NeighbourCells.Add(Grid[x+1, y]);
+                            cell.NeighbourCells.Add(Grid[x-1, y-1]);
+                            cell.NeighbourCells.Add(Grid[x+1, y-1]);
+                            cell.NeighbourCells.Add(Grid[x-1, y+1]);
+                            cell.NeighbourCells.Add(Grid[x+1, y-1]);
+                            break;
                     }
                     
                     Grid[x,y] = new Cell(x,y);
