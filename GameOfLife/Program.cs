@@ -125,60 +125,60 @@ namespace GameOfLife
             {
                 for (int y=0; y < Grid.GetLength(1); y++)
                 {
-                    Grid[x,y] = new Cell(x,y);
+                    var cell = Grid[x,y];
 
                     // A corner type cell?
                     if (x + y == 0)
                     {
-                        Grid[x,y].CellType = CellType.CornerTopLeft;
-                        Grid[x,y].Colour = "red";
+                        cell.CellType = CellType.CornerTopLeft;
+                        cell.Colour = "red";
                     }
                     else if (x == y && x == Grid.GetLength(0)-1 && y == Grid.GetLength(1)-1)
                     {
-                        Grid[x,y].CellType = CellType.CornerBottomRight;
-                        Grid[x,y].Colour = "red";
+                        cell.CellType = CellType.CornerBottomRight;
+                        cell.Colour = "red";
                     }
                     else if (x == Grid.GetLength(0)-1 && y == 0)
                     { 
-                        Grid[x,y].CellType = CellType.CornerTopRight;
-                        Grid[x,y].Colour = "red";
+                        cell.CellType = CellType.CornerTopRight;
+                        cell.Colour = "red";
                     }
                     else if (y == Grid.GetLength(1)-1 && x == 0)
                     {
-                        Grid[x,y].CellType = CellType.CornerBottomLeft;
-                        Grid[x,y].Colour = "red";
+                        cell.CellType = CellType.CornerBottomLeft;
+                        cell.Colour = "red";
                     }
 
                     // A cell on the edge of the grid?
-                    if (Grid[x,y].CellType == CellType.Unassigned)
+                    if (cell.CellType == CellType.Unassigned)
                     {
                         if (x == 0)
                         {
-                            Grid[x,y].CellType = CellType.EdgeLeft;
-                            Grid[x,y].Colour = "orange";
+                            cell.CellType = CellType.EdgeLeft;
+                            cell.Colour = "orange";
                         }
                         else if (x == Grid.GetLength(0)-1)
                         {
-                            Grid[x,y].CellType = CellType.EdgeRight;
-                            Grid[x,y].Colour = "orange";
+                            cell.CellType = CellType.EdgeRight;
+                            cell.Colour = "orange";
                         }
                         else if (y == 0)
                         {
-                            Grid[x,y].CellType = CellType.EdgeTop;
-                            Grid[x,y].Colour = "orange";
+                            cell.CellType = CellType.EdgeTop;
+                            cell.Colour = "orange";
                         }
                         else if (y == Grid.GetLength(1)-1)
                         {
-                            Grid[x,y].CellType = CellType.EdgeBottom;
-                            Grid[x,y].Colour = "orange";
+                            cell.CellType = CellType.EdgeBottom;
+                            cell.Colour = "orange";
                         }
                     }
 
                     // Remaining cells should be middle type cells.
-                    if (Grid[x,y].CellType == CellType.Unassigned)
+                    if (cell.CellType == CellType.Unassigned)
                     {
-                        Grid[x,y].CellType = CellType.Middle;
-                        Grid[x,y].Colour = "green";
+                        cell.CellType = CellType.Middle;
+                        cell.Colour = "green";
                     }
                 }
             }
@@ -253,8 +253,8 @@ namespace GameOfLife
                             cell.NeighbourCells.Add(Grid[x+1, y-1]);
                             break;
                     }
-                    
-                    Grid[x,y] = new Cell(x,y);
+                }
+            }       
         }
     }
 
