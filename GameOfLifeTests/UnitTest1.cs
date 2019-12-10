@@ -56,29 +56,22 @@ namespace GameOfLifeTests
 
         [Theory]
         [InlineData(3, 3, 0, 0)]
-        [InlineData(5, 5, 3, 3)]
-        [InlineData(9, 9, 5, 5)]
-        [InlineData(1000, 1000, 300, 300)]
         public void CheckNeighboursAssignedCorrectly(int sizeX, int sizeY, int posX, int posY)
         {
+            // Check that this cell has the correct neighbouring cells assigned to it.
             var board = new Board(sizeX, sizeY);
             var cell = board.Grid[posX, posY];
             var grid = board.Grid;
 
             var expectedNeighbouringCells = new List<Cell>()
             {
-                grid[posX+1, posY]
-
+                grid[posX+1, posY],
+                grid[posX+1, posY+1],
+                grid[posX, posY+1]
             };
 
-            bool equal = cell.NeighbourCells.OrderBy(i => i.coordinates.x + i.coordinates.y)
-                .SequenceEqual(expectedNeighbouringCells.OrderBy(i => i.coordinates.x + i.coordinates.y));
-
-            // Check that each cell has the correct neighbouring cells assigned.
-            Assert.True(board.Grid[0, 0].CellType == CellType.CornerTopLeft);
-            Assert.True(board.Grid[x-1, 0].CellType == CellType.CornerTopRight);
-            Assert.True(board.Grid[0, y-1].CellType == CellType.CornerBottomLeft);
-            Assert.True(board.Grid[x-1, y-1].CellType == CellType.CornerBottomRight);
+            Assert.True(cell.NeighbourCells.OrderBy(i => i.coordinates.x + i.coordinates.y)
+                .SequenceEqual(expectedNeighbouringCells.OrderBy(i => i.coordinates.x + i.coordinates.y)));
         }
     }
 }

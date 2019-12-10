@@ -31,15 +31,20 @@ namespace GameOfLife
 
     public class Game
     {
+        public Board Board { get; set; }
+
         public Game(Board board)
         {
-            board.Print();
-            board.PrintCoords();
+            Board = board;
+            Board.Print();
+            //Board.PrintCoords();
 
             while (this.NextGen())
             {
-                board.Print();
-                //await Task.Sleep(1000);
+                Console.Clear();
+                Board.Print();
+                AssignNextGen();
+                Console.ReadKey();
             }
         }
 
@@ -51,7 +56,69 @@ namespace GameOfLife
         public bool NextGen()
         {
             // Work out the next generation.
-            return false;
+            // Loop through the cells and check if each cell should be alive or dead in the next gen,
+            // depending on the cells current state and that of it's neighbours.
+
+            // GOL rules:
+            // ==========
+            // Any live cell with fewer than two live neighbours dies (referred to as underpopulation or exposure).
+            // Any live cell with more than three live neighbours dies (referred to as overpopulation or overcrowding).
+            // Any live cell with two or three live neighbours lives, unchanged, to the next generation.
+            // Any dead cell with exactly three live neighbours will come to life.
+
+            var grid = Board.Grid;
+
+            for (int x=0; x < grid.GetLength(0); x++)
+            {
+                for (int y=0; y < grid.GetLength(1); y++)
+                {
+                    var cell = grid[x,y];
+
+                    var aliveNeighboursCount = cell.NeighbourCells.FindAll(c => c.IsCurrentlyAlive).Count;
+
+                    if (cell.IsCurrentlyAlive)
+                    {
+                        if (aliveNeighboursCount < 2)
+                        {
+                            cell.IsFutureAlive = false;
+                        }
+                        else if (aliveNeighboursCount > 3)
+                        {
+                            cell.IsFutureAlive = false;
+                        }
+                        else if (aliveNeighboursCount == 2 || aliveNeighboursCount == 3)
+                        {
+                            cell.IsFutureAlive = true;
+                        }
+                    }
+                    else
+                    {
+                        if (aliveNeighboursCount == 3)
+                        {
+                            cell.IsFutureAlive = true;   
+                        }
+                        else
+                        {
+                            cell.IsFutureAlive = false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public void AssignNextGen()
+        {
+            for (int x=0; x < Board.Grid.GetLength(0); x++)
+            {
+                for (int y=0; y < Board.Grid.GetLength(1); y++)
+                {
+                    var cell = Board.Grid[x,y];
+                    cell.IsCurrentlyAlive = cell.IsFutureAlive;
+                    cell.IsFutureAlive = false;
+                }
+            }
         }
     }
 
@@ -61,7 +128,7 @@ namespace GameOfLife
 
         public Board(int sizeX, int sizeY)
         {
-            // TODO: given a board of dimensions x cells by y cells, create cells to fill it
+            // Given a board of dimensions x cells by y cells, create cells to fill it
             // and work out each cells neighbours.
             Grid = new Cell[sizeX, sizeY];
 
@@ -280,6 +347,7 @@ namespace GameOfLife
             this.IsCurrentlyAlive = random.Next(2) == 0 ? false : true;
             this.IsFutureAlive = false;
             this.CellType = CellType.Unassigned;
+            this.NeighbourCells = new List<Cell>();
         }
     }
 
