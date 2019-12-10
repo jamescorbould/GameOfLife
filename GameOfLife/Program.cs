@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Linq;
 
 namespace GameOfLife
 {
@@ -43,9 +43,31 @@ namespace GameOfLife
             {
                 Console.Clear();
                 Board.Print();
+
+                int aliveCount = 0;
+
+                for (int x=0; x < board.Grid.GetLength(0); x++)
+                {
+                    for (int y=0; y < board.Grid.GetLength(1); y++)
+                    {
+                        if (board.Grid[x,y].IsCurrentlyAlive)
+                        {
+                            aliveCount++;
+                        }
+                    }
+                }
+
+                if (aliveCount == 0)
+                {
+                    Console.WriteLine("Game Over");
+                    break;
+                }
+                
                 AssignNextGen();
                 Console.ReadKey();
             }
+
+            Console.ReadKey();
         }
 
         public void PrintMenu()
