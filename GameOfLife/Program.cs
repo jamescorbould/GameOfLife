@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GameOfLife
 {
@@ -38,6 +37,7 @@ namespace GameOfLife
             Board = board;
             Board.Print();
             //Board.PrintCoords();
+            Console.ReadKey();
 
             while (this.NextGen())
             {
@@ -62,7 +62,7 @@ namespace GameOfLife
                     Console.WriteLine("Game Over");
                     break;
                 }
-                
+
                 AssignNextGen();
                 Console.ReadKey();
             }
@@ -377,7 +377,7 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            var game = new Game(new Board(5,5));
+            var game = new Game(new Board(30,30));
         }
     }
 }
